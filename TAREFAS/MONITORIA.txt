@@ -1,0 +1,90 @@
+CREATE DATABASE MONITORIA;
+
+USE MONITORIA;
+
+CREATE TABLE `canteiro` (
+`canteiroid` INT(11) NOT NULL AUTO_INCREMENT,
+`nome` VARCHAR(60) DEFAULT NULL,
+`luzdiaria` INT(2) DEFAULT NULL,
+`agua` INT(3) DEFAULT NULL,
+PRIMARY KEY (`canteiroid`),
+UNIQUE KEY `canteiroid` (`canteiroid`)
+);
+ 
+CREATE TABLE `funcionario` (
+`funcid` INT(11) NOT NULL AUTO_INCREMENT,
+`nome` VARCHAR(60) NOT NULL DEFAULT '',
+`idade` INT(2) unsigned DEFAULT NULL,
+PRIMARY KEY (`funcid`),
+UNIQUE KEY `funcid` (`funcid`)
+);
+ 
+CREATE TABLE `planta` (
+`ID` INT(11) NOT NULL AUTO_INCREMENT,
+`nome` VARCHAR(60) NOT NULL DEFAULT '',
+`luzdiaria` INT(2) DEFAULT NULL,
+`agua` INT(2) DEFAULT NULL,
+`peso` DOUBLE(4,3) DEFAULT 0 NOT NULL,
+PRIMARY KEY (`ID`),
+UNIQUE KEY `ID` (`ID`)
+);
+ 
+CREATE TABLE `plantio` (
+`plantioID` INT(11) NOT NULL AUTO_INCREMENT,
+`plantaID` INT(11) NOT NULL,
+`funcID` INT(11) NOT NULL ,
+`canteiroID` INT(11) NOT NULL,
+`dataplantio` DATE DEFAULT NULL,
+`sementes` INT(4) DEFAULT 0 NOT NULL,
+PRIMARY KEY (`plantioID`),
+FOREIGN KEY(`plantaID`) REFERENCES planta(ID),
+FOREIGN KEY(`funcID`) REFERENCES funcionario(funcID),
+FOREIGN KEY(`plantaID`) REFERENCES canteiro(canteiroID),
+UNIQUE KEY `ID` (`plantioID`)
+);
+ 
+CREATE TABLE `colhido` (
+`colhidoID` INT(11) NOT NULL AUTO_INCREMENT,
+`plantaID` INT(11) NOT NULL,
+`funcID` INT(11) NOT NULL ,
+`canteiroID` INT(11) NOT NULL,
+`datacolheita` DATE DEFAULT NULL,
+`quantidade` INT(4) DEFAULT 0 NOT NULL,
+`peso` DOUBLE(4,3) DEFAULT 0 NOT NULL,
+PRIMARY KEY (`colhidoID`),
+FOREIGN KEY(`plantaID`) REFERENCES planta(ID),
+FOREIGN KEY(`funcID`) REFERENCES funcionario(funcID),
+FOREIGN KEY(`plantaID`) REFERENCES canteiro(canteiroID),
+UNIQUE KEY `ID` (`colhidoID`)
+);
+
+
+DROP TABLE plantio
+ALTER TABLE funcionario ADD cpf varchar(20),rg varchar(15)
+ALTER TABLE funcionario ALTER COLUMN cpf varchar(14)
+ALTER TABLE funcionario DROP COLUMN cpf, rg
+
+INSERT INTO canteiro (nome, luzdiaria, agua)
+VALUES ('frutas', 5.0, 9.25),
+('verduras', 5.0, 8.25),
+('legumes', 9.0, 5.25);
+
+INSERT INTO funcionario(funcid, nome, idade)
+VALUES (25, 'Gabriella Fonseca Ribeiro', 52),
+(24, 'Fernando Moreira', 42);
+
+INSERT INTO planta (nome, luzdiaria, agua, peso)
+VALUES ('ABACAXI', 3.0, 5.25, 5.5),
+('ACEROLA', 5.0, 8.25, 6.5),
+('TOMATE', 9.0, 1.25, 8.5),
+('BATATA', 1.0, 2.25, 6.5);
+
+INSERT INTO plantio(plantaID, funcID, canteiroID, dataplantio, sementes)
+VALUES (5, 25, 4, '2011-06-07', 8);
+ 
+INSERT INTO colhido(plantaID, funcID, canteiroID, dataconheita, quantidade, peso)
+VALUES (1, 25, 1, '2011-06-27', 52, 25.3);
+
+
+select * from canteiro
+
